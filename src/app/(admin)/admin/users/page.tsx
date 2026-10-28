@@ -1,6 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 
+// TypeScript-কে বলে দিচ্ছি ডাটা কেমন হবে
+type ProfileType = {
+  id: string;
+  full_name: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+};
+
 export default async function AdminUsersPage() {
   const supabase = await createClient();
   
@@ -9,6 +19,9 @@ export default async function AdminUsersPage() {
     .from("profiles")
     .select("*")
     .order("created_at", { ascending: false });
+
+  // TypeScript এরর এড়াতে 'as ProfileType[]' ব্যবহার করা হলো
+  const userList = (profiles as ProfileType[]) || [];
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -35,8 +48,8 @@ export default async function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {profiles && profiles.length > 0 ? (
-                profiles.map((profile) => (
+              {userList.length > 0 ? (
+                userList.map((profile) => (
                   <tr key={profile.id} className="border-b bg-white hover:bg-gray-50">
                     <td className="px-6 py-4 font-medium text-gray-900">{profile.full_name}</td>
                     <td className="px-6 py-4">{profile.email}</td>
