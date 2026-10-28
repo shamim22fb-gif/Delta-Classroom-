@@ -1,42 +1,74 @@
-// src/lib/supabase/middleware.ts
-import { createServerClient } from "@supabase/ssr";
+// src/middleware.ts
 import { NextResponse, type NextRequest } from "next/server";
-import type { Database } from "@/types/database";
+import { updateSession } from "@/lib/supabase/middleware";
+import {
+  isAdminRoute,
+  isAuthRoute,
+  isPublicRoute,
+  isQuestionbankRoute,
+} from "@/constants/routes";
+import { ROLES } from "@/constants/roles";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        // এখানে টাইপ ডিফাইন করে দিয়েছি
-        setAll(
-          cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]
-        ) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
+  // ── 1. Session refresh + get user ───────────────────
+  // এখানে আমরা src/lib/supabase/middleware.ts এর ফাংশনটি কল করছি
+  const { user, response } = await updateSession(request);
+
+  // ── 2. Public routes — allow সবাই ────────────────────
+  if (isPublicRoute(pathname)) {
+    // Logged-in user যদি auth page-এ যায় → dashboard-এ পাঠাও
+    if (user && isAuthRoute(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
     }
-  );
+    return response;
+  }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // ── 3. Not logged in + protected route → /login ─────
+  if (!user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(url);
+  }
 
-  return { supabase, user, response: supabaseResponse };
+  // ── 4. Logged in → role-based check ──────────────────
+  const role = (user.user_metadata?.role as string) ?? ROLES.STUDENT;
+
+  // Admin route → only admin
+  if (isAdminRoute(pathname) && role !== ROLES.ADMIN) {
+    const url = request.nextUrl.clone();
+    url.pathname = role === ROLES.TEACHER ? "/questionbank" : "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  // Questionbank route → teacher or admin
+  if (
+    isQuestionbankRoute(pathname) &&
+    role !== ROLES.TEACHER &&
+    role !== ROLES.ADMIN
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  return response;
 }
+
+export const config = {
+  matcher: [
+    /*
+     * সব request-এ middleware চালাবে, EXCEPT:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico
+     * - public assets (images, icons)
+     * - api routes (আলাদা auth check route handler-এ)
+     */
+    "/((?!_next/static|_next/image|favicon.ico|images|icons|api).*)",
+  ],
+};
