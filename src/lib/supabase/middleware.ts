@@ -16,7 +16,7 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
@@ -31,8 +31,6 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // ⚠️ createServerClient এবং auth.getUser()-এর মধ্যে
-  // কোনো কোড লিখবেন না — session refresh ভেঙে যাবে।
   const {
     data: { user },
   } = await supabase.auth.getUser();
