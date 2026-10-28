@@ -15,462 +15,574 @@ export default async function DashboardPage() {
 
   const stats = [
     {
-      title: "এনরোলড কোর্স",
+      title: "আমার কোর্স",
       value: "০",
-      icon: "▤",
-      color: "from-cyan-500/20 to-blue-500/10",
-      accent: "text-cyan-300",
-      border: "border-cyan-400/20",
+      subtitle: "এনরোলড কোর্স",
+      icon: "📚",
+      color: "bg-blue-50",
+      accent: "text-blue-600",
+      badge: "border-blue-100",
     },
     {
       title: "সম্পন্ন লেসন",
       value: "০",
+      subtitle: "শেখার অগ্রগতি",
       icon: "✓",
-      color: "from-emerald-500/20 to-teal-500/10",
-      accent: "text-emerald-300",
-      border: "border-emerald-400/20",
+      color: "bg-emerald-50",
+      accent: "text-emerald-600",
+      badge: "border-emerald-100",
     },
     {
-      title: "অংশগ্রহণ করা পরীক্ষা",
+      title: "পরীক্ষা",
       value: "০",
+      subtitle: "অংশগ্রহণের সংখ্যা",
       icon: "✎",
-      color: "from-violet-500/20 to-purple-500/10",
-      accent: "text-violet-300",
-      border: "border-violet-400/20",
+      color: "bg-violet-50",
+      accent: "text-violet-600",
+      badge: "border-violet-100",
     },
     {
-      title: "অর্জিত পয়েন্ট",
+      title: "পয়েন্ট",
       value: "০",
+      subtitle: "মোট অর্জিত পয়েন্ট",
       icon: "★",
-      color: "from-amber-500/20 to-orange-500/10",
-      accent: "text-amber-300",
-      border: "border-amber-400/20",
+      color: "bg-amber-50",
+      accent: "text-amber-600",
+      badge: "border-amber-100",
     },
   ];
 
-  const quickLinks = [
+  const shortcuts = [
     {
-      icon: "▤",
+      icon: "📚",
       title: "আমার কোর্স",
-      desc: "কোর্স ও লেসন দেখুন",
+      description: "এনরোলড কোর্স দেখুন",
       href: "/mycourse",
-      color: "text-cyan-300",
+      color: "bg-blue-50",
+      accent: "text-blue-600",
     },
     {
-      icon: "✎",
-      title: "পরীক্ষা",
-      desc: "প্রস্তুতি ও অনুশীলন",
-      href: "/exam",
-      color: "text-violet-300",
+      icon: "🔎",
+      title: "কোর্স খুঁজুন",
+      description: "নতুন কোর্স আবিষ্কার করুন",
+      href: "/course",
+      color: "bg-cyan-50",
+      accent: "text-cyan-700",
     },
     {
-      icon: "♧",
-      title: "প্রোফাইল",
-      desc: "নিজের তথ্য আপডেট করুন",
+      icon: "👤",
+      title: "আমার প্রোফাইল",
+      description: "ব্যক্তিগত তথ্য আপডেট করুন",
       href: "/profile",
-      color: "text-emerald-300",
+      color: "bg-violet-50",
+      accent: "text-violet-600",
     },
     {
-      icon: "♧",
+      icon: "🔔",
       title: "নোটিশ বোর্ড",
-      desc: "সর্বশেষ ঘোষণা দেখুন",
+      description: "সর্বশেষ ঘোষণা দেখুন",
       href: "/notice",
-      color: "text-amber-300",
+      color: "bg-orange-50",
+      accent: "text-orange-600",
     },
+  ];
+
+  const days = [
+    { day: "শনি", short: "S" },
+    { day: "রবি", short: "S" },
+    { day: "সোম", short: "M" },
+    { day: "মঙ্গল", short: "T" },
+    { day: "বুধ", short: "W" },
+    { day: "বৃহঃ", short: "T" },
+    { day: "শুক্র", short: "F" },
   ];
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#080d1b] text-slate-100">
-      {/* Background effects */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -right-40 -top-40 h-96 w-96 rounded-full bg-blue-600/10 blur-[120px]" />
-        <div className="absolute -left-40 top-[40%] h-96 w-96 rounded-full bg-violet-600/10 blur-[120px]" />
-      </div>
+    <main className="min-h-screen bg-[#f7f9fc] text-slate-800">
+      <div className="mx-auto max-w-[1600px] lg:flex">
 
-      <div className="relative mx-auto max-w-[1500px] px-4 py-5 sm:px-6 sm:py-8 lg:px-10">
-        {/* Top navigation */}
-        <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-xl font-black text-white shadow-lg shadow-blue-500/20">
+        {/* Sidebar */}
+        <aside className="hidden w-[250px] shrink-0 border-r border-slate-200/80 bg-white lg:flex lg:min-h-screen lg:flex-col">
+          <Link href="/dashboard" className="flex items-center gap-3 px-6 py-7">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 text-2xl font-black text-white shadow-lg shadow-teal-500/20">
               Δ
             </div>
             <div>
-              <h1 className="text-lg font-extrabold tracking-tight sm:text-xl">
-                SA Delta <span className="text-cyan-300">Classroom</span>
-              </h1>
-              <p className="text-xs tracking-widest text-slate-500">
-                YOUR LEARNING SPACE
+              <p className="text-lg font-extrabold tracking-tight text-slate-900">
+                SA Delta
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-teal-600">
+                Classroom
               </p>
             </div>
           </Link>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/notice"
-              aria-label="নোটিশ"
-              className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-xl transition hover:bg-white/10"
-            >
-              ♧
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-cyan-400" />
-            </Link>
+          <div className="px-4">
+            <p className="mb-3 px-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+              Main menu
+            </p>
 
+            <nav className="space-y-1.5">
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-teal-500/20"
+              >
+                <span className="text-lg">▦</span>
+                ড্যাশবোর্ড
+                <span className="ml-auto">›</span>
+              </Link>
+
+              {[
+                ["📚", "আমার কোর্স", "/mycourse"],
+                ["🔍", "সকল কোর্স", "/course"],
+                ["👤", "আমার প্রোফাইল", "/profile"],
+                ["🔔", "নোটিশ বোর্ড", "/notice"],
+              ].map(([icon, title, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-teal-50 hover:text-teal-700"
+                >
+                  <span>{icon}</span>
+                  {title}
+                  <span className="ml-auto text-slate-300">›</span>
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="mt-8 px-4">
+            <p className="mb-3 px-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+              Your account
+            </p>
             <Link
               href="/profile"
-              className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-2 pr-4 transition hover:bg-white/[0.08]"
+              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-violet-50 hover:text-violet-700"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-600 font-bold text-white">
-                {initial}
-              </div>
-              <div className="hidden sm:block">
-                <p className="max-w-40 truncate text-sm font-semibold">
-                  {name}
-                </p>
-                <p className="text-xs text-slate-500">শিক্ষার্থী</p>
-              </div>
-              <span className="text-xs text-slate-400">⌄</span>
+              <span>⚙️</span>
+              অ্যাকাউন্ট সেটিংস
             </Link>
           </div>
-        </header>
 
-        {/* Main layout */}
-        <div className="grid gap-8 lg:grid-cols-[235px_minmax(0,1fr)]">
-          {/* Sidebar */}
-          <aside className="space-y-6">
-            <div className="rounded-2xl border border-white/[0.08] bg-[#101729]/80 p-3">
-              <p className="px-3 pb-3 pt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
-                Main menu
+          <div className="mt-auto p-4">
+            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#e7faf7] to-[#edf3ff] p-5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">
+                🎯
+              </div>
+              <h3 className="mt-4 font-extrabold text-slate-800">
+                লক্ষ্য স্থির করো!
+              </h3>
+              <p className="mt-2 text-xs leading-6 text-slate-500">
+                নিয়মিত পড়াশোনা করো, নিজের দক্ষতা বাড়াও।
               </p>
+              <Link
+                href="/course"
+                className="mt-4 flex items-center justify-center rounded-xl bg-teal-600 px-3 py-2.5 text-xs font-bold text-white transition hover:bg-teal-700"
+              >
+                শেখা শুরু করো →
+              </Link>
+            </div>
+            <p className="mt-5 text-center text-[10px] text-slate-400">
+              © {new Date().getFullYear()} SA Delta Classroom
+            </p>
+          </div>
+        </aside>
 
-              <nav className="space-y-1">
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-3 rounded-xl border border-cyan-400/20 bg-gradient-to-r from-cyan-500/15 to-blue-500/5 px-4 py-3 text-sm font-semibold text-cyan-300"
-                >
-                  <span className="text-lg">⌂</span>
-                  ড্যাশবোর্ড
-                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-cyan-300" />
-                </Link>
+        {/* Main dashboard */}
+        <section className="min-w-0 flex-1 px-4 py-5 sm:px-6 sm:py-7 lg:px-9 lg:py-8">
 
-                {[
-                  ["▤", "আমার কোর্স", "/mycourse"],
-                  ["▧", "সকল কোর্স", "/course"],
-                  ["✎", "পরীক্ষা", "/exam"],
-                  ["☆", "আমার ফলাফল", "/result"],
-                  ["♙", "আমার প্রোফাইল", "/profile"],
-                ].map(([icon, title, href]) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
-                  >
-                    <span className="w-5 text-center text-lg">{icon}</span>
-                    {title}
-                  </Link>
-                ))}
-              </nav>
+          {/* Header */}
+          <header className="mb-7 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold text-slate-400">
+                SA DELTA CLASSROOM / OVERVIEW
+              </p>
+              <h1 className="mt-2 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+                আমার ড্যাশবোর্ড
+              </h1>
+              <p className="mt-1.5 text-sm text-slate-500">
+                তোমার পড়াশোনার সবকিছু এক জায়গায়।
+              </p>
             </div>
 
-            {/* Help card */}
-            <div className="relative overflow-hidden rounded-2xl border border-violet-400/15 bg-gradient-to-br from-violet-500/15 to-blue-500/5 p-5">
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-violet-400/10 blur-2xl" />
-              <div className="relative">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-violet-400/15 text-2xl">
-                  ✦
+            <div className="flex items-center gap-3">
+              <Link
+                href="/notice"
+                aria-label="নোটিশ"
+                className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-lg shadow-sm transition hover:border-teal-300 hover:bg-teal-50"
+              >
+                🔔
+              </Link>
+              <Link
+                href="/profile"
+                className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-2 pr-3 shadow-sm transition hover:border-teal-300"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-blue-600 font-bold text-white">
+                  {initial}
                 </div>
-                <h3 className="font-bold">শেখা শুরু করো!</h3>
-                <p className="mt-2 text-xs leading-6 text-slate-400">
-                  নতুন কোর্সের মাধ্যমে নিজের দক্ষতা বাড়িয়ে নাও।
+                <div className="hidden sm:block">
+                  <p className="max-w-36 truncate text-sm font-bold text-slate-800">
+                    {name}
+                  </p>
+                  <p className="text-[11px] text-slate-400">
+                    {user.role || "শিক্ষার্থী"}
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </header>
+
+          {/* Welcome banner */}
+          <div className="relative mb-7 overflow-hidden rounded-[26px] bg-gradient-to-r from-[#087f8c] via-[#087eaa] to-[#4056c8] p-6 text-white shadow-xl shadow-blue-900/10 sm:p-9">
+            <div className="absolute -right-12 -top-20 h-64 w-64 rounded-full border-[35px] border-white/[0.07]" />
+            <div className="absolute -bottom-24 right-40 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
+
+            <div className="relative flex flex-col justify-between gap-7 sm:flex-row sm:items-center">
+              <div className="max-w-2xl">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white/90">
+                  <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                  LEARN · GROW · ACHIEVE
+                </span>
+                <h2 className="mt-5 text-3xl font-black leading-tight sm:text-4xl">
+                  স্বাগতম, {name}! 👋
+                </h2>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-white/80 sm:text-base">
+                  প্রতিদিন নতুন কিছু শেখো। তোমার স্বপ্ন পূরণের পথে আজকের
+                  ছোট পদক্ষেপটিই হতে পারে সবচেয়ে গুরুত্বপূর্ণ।
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    href="/course"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-extrabold text-teal-800 shadow-lg transition hover:-translate-y-0.5 hover:bg-cyan-50"
+                  >
+                    📚 কোর্স খুঁজুন <span>→</span>
+                  </Link>
+                  <Link
+                    href="/mycourse"
+                    className="inline-flex items-center justify-center rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/20"
+                  >
+                    আমার কোর্স
+                  </Link>
+                </div>
+              </div>
+
+              <div className="hidden shrink-0 items-center justify-center sm:flex">
+                <div className="flex h-32 w-32 items-center justify-center rounded-full border border-white/25 bg-white/10 text-6xl shadow-inner backdrop-blur-sm">
+                  🎓
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Statistics */}
+          <div className="mb-8">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-extrabold text-slate-900">
+                  তোমার শেখার পরিসংখ্যান
+                </h2>
+                <p className="mt-1 text-xs text-slate-500">
+                  এক নজরে তোমার লার্নিং অ্যাক্টিভিটি
+                </p>
+              </div>
+              <span className="rounded-lg bg-white px-3 py-2 text-[11px] font-semibold text-slate-500 shadow-sm ring-1 ring-slate-200">
+                Overview
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {stats.map((stat) => (
+                <div
+                  key={stat.title}
+                  className={`group rounded-2xl border ${stat.badge} bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/70`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-bold text-slate-700">
+                        {stat.title}
+                      </p>
+                      <p className="mt-1.5 text-[11px] text-slate-400">
+                        {stat.subtitle}
+                      </p>
+                    </div>
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${stat.color} text-xl ${stat.accent} transition group-hover:scale-105`}
+                    >
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <div className="mt-5 flex items-end justify-between">
+                    <p className="text-3xl font-black tracking-tight text-slate-900">
+                      {stat.value}
+                    </p>
+                    <span className="text-[10px] font-semibold text-slate-400">
+                      মোট
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Main content columns */}
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.8fr)]">
+
+            {/* Courses */}
+            <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-extrabold text-slate-900">
+                    চলমান কোর্সসমূহ
+                  </h2>
+                  <p className="mt-1 text-xs text-slate-500">
+                    তোমার শেখার যাত্রা এখান থেকে শুরু
+                  </p>
+                </div>
+                <Link
+                  href="/mycourse"
+                  className="shrink-0 text-xs font-bold text-teal-700 hover:text-blue-700"
+                >
+                  সব দেখুন →
+                </Link>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-dashed border-teal-200 bg-gradient-to-br from-teal-50/80 via-white to-blue-50/60 px-5 py-10 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-3xl shadow-md shadow-teal-100">
+                  📖
+                </div>
+                <h3 className="mt-5 text-base font-extrabold text-slate-800">
+                  এখনো কোনো কোর্সে এনরোল করা হয়নি
+                </h3>
+                <p className="mx-auto mt-2 max-w-sm text-xs leading-6 text-slate-500">
+                  তোমার পছন্দের কোর্স বেছে নাও এবং ধাপে ধাপে শেখা শুরু করো।
                 </p>
                 <Link
                   href="/course"
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-300 hover:text-white"
+                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-blue-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:from-teal-700 hover:to-blue-700"
                 >
-                  কোর্স দেখুন <span>→</span>
+                  সকল কোর্স দেখুন <span>→</span>
                 </Link>
               </div>
             </div>
 
-            <div className="hidden px-3 text-xs leading-6 text-slate-600 lg:block">
-              SA Delta Classroom
-              <br />
-              আপনার শেখার নির্ভরযোগ্য সঙ্গী।
-            </div>
-          </aside>
-
-          {/* Dashboard content */}
-          <section className="min-w-0 space-y-8">
-            {/* Welcome banner */}
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-[#172747] via-[#14213e] to-[#20163e] p-6 shadow-2xl shadow-black/20 sm:p-9 lg:p-10">
-              <div className="absolute -right-16 -top-24 h-72 w-72 rounded-full border-[35px] border-cyan-300/[0.06]" />
-              <div className="absolute -bottom-28 right-24 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
-
-              <div className="relative flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
-                <div className="max-w-2xl">
-                  <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.07] px-3 py-1.5 text-xs font-medium text-cyan-200">
-                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
-                    LEARNING DASHBOARD
-                  </div>
-
-                  <p className="mb-2 text-sm text-slate-400">
-                    তোমার শেখার নতুন দিন শুরু হোক
-                  </p>
-                  <h2 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-                    স্বাগতম,{" "}
-                    <span className="bg-gradient-to-r from-cyan-300 to-violet-300 bg-clip-text text-transparent">
-                      {name}
-                    </span>{" "}
-                    <span className="inline-block">👋</span>
-                  </h2>
-                  <p className="mt-4 max-w-xl text-sm leading-7 text-slate-400 sm:text-base">
-                    প্রতিদিন একটু একটু করে এগিয়ে যাও। তোমার লক্ষ্য অর্জনের
-                    যাত্রা শুরু হোক আজ থেকেই।
-                  </p>
-
-                  <div className="mt-7 flex flex-wrap gap-3">
-                    <Link
-                      href="/course"
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-5 py-3 text-sm font-bold text-[#07111f] shadow-lg shadow-cyan-500/15 transition hover:-translate-y-0.5 hover:shadow-cyan-500/25"
-                    >
-                      পড়াশোনা শুরু করুন <span>→</span>
-                    </Link>
-                    <Link
-                      href="/profile"
-                      className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.05] px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
-                    >
-                      প্রোফাইল দেখুন
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="flex shrink-0 items-center justify-center sm:pr-5">
-                  <div className="relative flex h-32 w-32 items-center justify-center rounded-full border border-cyan-200/20 bg-gradient-to-br from-cyan-400/15 to-violet-500/20 shadow-[0_0_60px_rgba(34,211,238,0.08)] sm:h-40 sm:w-40">
-                    <div className="absolute inset-3 rounded-full border border-dashed border-white/20" />
-                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-violet-600 text-4xl font-black text-white shadow-xl sm:h-28 sm:w-28 sm:text-5xl">
-                      {initial}
-                    </div>
-                    <span className="absolute right-1 top-5 flex h-8 w-8 items-center justify-center rounded-xl border border-white/20 bg-[#172747] text-sm">
-                      ✦
-                    </span>
-                    <span className="absolute bottom-3 left-0 flex h-8 w-8 items-center justify-center rounded-xl border border-white/20 bg-[#172747] text-sm">
-                      ✓
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div>
-              <div className="mb-4 flex items-center justify-between">
+            {/* Study plan */}
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold sm:text-xl">
-                    তোমার শেখার পরিসংখ্যান
+                  <h2 className="text-lg font-extrabold text-slate-900">
+                    সাপ্তাহিক স্টাডি প্ল্যান
                   </h2>
                   <p className="mt-1 text-xs text-slate-500">
-                    তোমার বর্তমান লার্নিং অ্যাক্টিভিটি
+                    তোমার পড়াশোনার রুটিন
                   </p>
                 </div>
-                <span className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                  Overview
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-xl">
+                  🗓️
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                {stats.map((stat) => (
+              <div className="mt-6 grid grid-cols-7 gap-1.5">
+                {days.map((day, index) => (
                   <div
-                    key={stat.title}
-                    className={`group rounded-2xl border ${stat.border} bg-gradient-to-br ${stat.color} p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20`}
+                    key={day.day}
+                    className={`rounded-xl px-1 py-3 text-center ${
+                      index === 2
+                        ? "bg-gradient-to-b from-teal-500 to-blue-600 text-white shadow-md shadow-teal-500/20"
+                        : "bg-slate-50 text-slate-500"
+                    }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-xs font-medium leading-6 text-slate-400">
-                        {stat.title}
-                      </p>
-                      <div
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#0b1324]/50 text-xl ${stat.accent}`}
-                      >
-                        {stat.icon}
-                      </div>
-                    </div>
-                    <div className="mt-5 flex items-end justify-between">
-                      <p className="text-3xl font-black tracking-tight">
-                        {stat.value}
-                      </p>
-                      <span className="pb-1 text-[10px] text-slate-500">
-                        মোট
-                      </span>
-                    </div>
+                    <p className="text-[9px] font-semibold sm:text-[10px]">
+                      {day.day}
+                    </p>
+                    <p className="mt-2 text-sm font-extrabold">
+                      {day.short}
+                    </p>
+                    <div
+                      className={`mx-auto mt-2 h-1 w-1 rounded-full ${
+                        index === 2 ? "bg-white" : "bg-slate-300"
+                      }`}
+                    />
                   </div>
                 ))}
               </div>
-            </div>
 
-            {/* Course + profile */}
-            <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(280px,0.85fr)]">
-              {/* Course area */}
-              <div className="rounded-2xl border border-white/[0.08] bg-[#101729]/80 p-5 sm:p-7">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <h2 className="text-lg font-bold">চলমান কোর্সসমূহ</h2>
-                    <p className="mt-1 text-xs text-slate-500">
-                      যেখান থেকে শেখা শুরু করতে পারো
-                    </p>
-                  </div>
-                  <Link
-                    href="/mycourse"
-                    className="shrink-0 text-xs font-semibold text-cyan-300 transition hover:text-white"
-                  >
-                    সব দেখুন →
-                  </Link>
-                </div>
-
-                <div className="mt-6 overflow-hidden rounded-2xl border border-dashed border-white/15 bg-gradient-to-br from-white/[0.035] to-transparent px-5 py-10 text-center sm:py-12">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.07] text-3xl">
-                    📚
-                  </div>
-                  <h3 className="mt-5 text-base font-bold">
-                    এখনো কোনো কোর্সে এনরোল করা হয়নি
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-sm text-xs leading-6 text-slate-500">
-                    তোমার পছন্দের কোর্স বেছে নাও এবং নিজের শেখার অগ্রগতি
-                    তৈরি করো।
-                  </p>
-                  <Link
-                    href="/course"
-                    className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-white/[0.07] px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/10 transition hover:bg-cyan-400 hover:text-slate-950"
-                  >
-                    কোর্স ব্রাউজ করুন <span>→</span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Profile card */}
-              <div className="rounded-2xl border border-white/[0.08] bg-[#101729]/80 p-5 sm:p-7">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold">তোমার প্রোফাইল</h2>
-                  <span className="text-lg text-cyan-300">♙</span>
-                </div>
-
-                <div className="mt-6 flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-600 text-xl font-bold">
-                    {initial}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold">{name}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {user.role || "শিক্ষার্থী"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-5 space-y-4">
-                  <div>
-                    <p className="mb-2 text-[11px] text-slate-500">ইমেইল</p>
-                    <p className="break-all text-sm text-slate-300">
-                      {user.email}
-                    </p>
-                  </div>
-                  <div className="h-px bg-white/[0.07]" />
-                  <div>
-                    <p className="mb-2 text-[11px] text-slate-500">
-                      অ্যাকাউন্ট তৈরি
-                    </p>
-                    <p className="text-sm text-slate-300">
-                      {user.created_at
-                        ? formatDate(user.created_at)
-                        : "তথ্য পাওয়া যায়নি"}
-                    </p>
-                  </div>
-                </div>
-
-                <Link
-                  href="/profile"
-                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] py-3 text-sm font-semibold transition hover:border-cyan-300/30 hover:bg-cyan-300/[0.07] hover:text-cyan-200"
-                >
-                  প্রোফাইল এডিট করুন <span>→</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Quick links */}
-            <div>
-              <div className="mb-4">
-                <h2 className="text-lg font-bold">দ্রুত অ্যাক্সেস</h2>
-                <p className="mt-1 text-xs text-slate-500">
-                  প্রয়োজনীয় সবকিছু এক জায়গায়
+              <div className="mt-5 rounded-xl border border-violet-100 bg-violet-50/60 p-4">
+                <p className="text-xs font-extrabold text-violet-800">
+                  ✨ আজকের লক্ষ্য
+                </p>
+                <p className="mt-2 text-xs leading-6 text-slate-600">
+                  নিজের জন্য একটি পড়াশোনার রুটিন তৈরি করো এবং প্রতিদিন
+                  নিয়মিত শেখার অভ্যাস গড়ে তোলো।
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {quickLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="group flex items-center gap-4 rounded-2xl border border-white/[0.08] bg-[#101729]/70 p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-[#17213a]"
-                  >
-                    <div
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.04] text-2xl ${item.color}`}
-                    >
-                      {item.icon}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-sm font-bold">{item.title}</h3>
-                      <p className="mt-1 text-[10px] leading-5 text-slate-500">
-                        {item.desc}
-                      </p>
-                    </div>
-                    <span className="text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                      →
-                    </span>
-                  </Link>
-                ))}
-              </div>
+              <Link
+                href="/mycourse"
+                className="mt-4 flex w-full items-center justify-center rounded-xl border border-teal-200 bg-teal-50 py-3 text-sm font-bold text-teal-800 transition hover:bg-teal-100"
+              >
+                পড়াশোনা চালিয়ে যাও →
+              </Link>
+            </div>
+          </div>
+
+          {/* Quick access */}
+          <div className="mt-8">
+            <div className="mb-4">
+              <h2 className="text-lg font-extrabold text-slate-900">
+                দ্রুত অ্যাক্সেস
+              </h2>
+              <p className="mt-1 text-xs text-slate-500">
+                গুরুত্বপূর্ণ পেজগুলোতে সহজে প্রবেশ করো
+              </p>
             </div>
 
-            {/* Notice */}
-            <div className="rounded-2xl border border-white/[0.08] bg-[#101729]/80 p-5 sm:p-7">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {shortcuts.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-lg hover:shadow-teal-100/60"
+                >
+                  <div
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${item.color} text-xl transition group-hover:scale-105`}
+                  >
+                    {item.icon}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-extrabold text-slate-800">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-[11px] leading-5 text-slate-500">
+                      {item.description}
+                    </p>
+                  </div>
+                  <span className="text-lg text-slate-300 transition group-hover:translate-x-1 group-hover:text-teal-600">
+                    →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Profile + notices */}
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-xl">
+                  👤
+                </div>
+                <div>
+                  <h2 className="font-extrabold text-slate-900">
+                    আমার প্রোফাইল
+                  </h2>
+                  <p className="mt-1 text-xs text-slate-500">
+                    অ্যাকাউন্টের সংক্ষিপ্ত তথ্য
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="text-xs text-slate-500">পূর্ণ নাম</span>
+                  <span className="break-words text-sm font-bold text-slate-800 sm:max-w-[65%] sm:text-right">
+                    {name}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1 border-b border-slate-100 pb-3 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="text-xs text-slate-500">ইমেইল</span>
+                  <span className="break-all text-sm font-medium text-slate-700 sm:max-w-[65%] sm:text-right">
+                    {user.email}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                  <span className="text-xs text-slate-500">রোল</span>
+                  <span className="rounded-lg bg-teal-50 px-3 py-1.5 text-xs font-bold text-teal-700">
+                    {user.role || "শিক্ষার্থী"}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                  <span className="text-xs text-slate-500">জয়েনিং</span>
+                  <span className="text-sm font-medium text-slate-700">
+                    {user.created_at
+                      ? formatDate(user.created_at)
+                      : "তথ্য পাওয়া যায়নি"}
+                  </span>
+                </div>
+              </div>
+
+              <Link
+                href="/profile"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-blue-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/10 transition hover:from-teal-700 hover:to-blue-700"
+              >
+                প্রোফাইল এডিট করুন <span>→</span>
+              </Link>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-400/10 text-xl text-amber-300">
-                    ♧
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-xl">
+                    🔔
                   </div>
                   <div>
-                    <h2 className="font-bold">নোটিশ বোর্ড</h2>
+                    <h2 className="font-extrabold text-slate-900">
+                      নোটিশ বোর্ড
+                    </h2>
                     <p className="mt-1 text-xs text-slate-500">
-                      গুরুত্বপূর্ণ আপডেট ও ঘোষণা
+                      গুরুত্বপূর্ণ আপডেট
                     </p>
                   </div>
                 </div>
                 <Link
                   href="/notice"
-                  className="text-xs font-semibold text-cyan-300 hover:text-white"
+                  className="shrink-0 text-xs font-bold text-teal-700 hover:text-blue-700"
                 >
-                  সব নোটিশ →
+                  সব দেখুন →
                 </Link>
               </div>
 
-              <div className="mt-5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-lg text-amber-300">✦</span>
+              <div className="mt-5 rounded-xl border border-orange-100 bg-orange-50/50 p-4">
+                <div className="flex gap-3">
+                  <span className="text-xl">📢</span>
                   <div>
-                    <p className="text-sm font-semibold">
-                      নতুন নোটিশের জন্য চোখ রাখুন
+                    <p className="text-sm font-bold text-slate-800">
+                      নোটিশ বোর্ড নিয়মিত দেখুন
                     </p>
                     <p className="mt-1 text-xs leading-6 text-slate-500">
-                      ক্লাস, পরীক্ষা ও অন্যান্য ঘোষণা জানতে নোটিশ বোর্ড
-                      নিয়মিত দেখুন।
+                      ক্লাস, পরীক্ষা ও নতুন ঘোষণার আপডেট এখানে দেখুন।
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3 rounded-xl border border-blue-100 bg-blue-50/50 p-4">
+                <div className="flex gap-3">
+                  <span className="text-xl">💡</span>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800">
+                      নিয়মিত পড়াশোনা করো
+                    </p>
+                    <p className="mt-1 text-xs leading-6 text-slate-500">
+                      প্রতিদিন অল্প সময় হলেও শেখার জন্য ব্যয় করো।
                     </p>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Footer */}
-            <footer className="flex flex-col items-center justify-between gap-2 border-t border-white/[0.07] py-5 text-center text-[11px] text-slate-600 sm:flex-row sm:text-left">
-              <p>© {new Date().getFullYear()} SA Delta Classroom</p>
-              <p>শেখো আজ, এগিয়ে যাও আগামীকাল। ✦</p>
-            </footer>
-          </section>
-        </div>
+          {/* Footer */}
+          <footer className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-slate-200 py-5 text-center text-xs text-slate-400 sm:flex-row sm:text-left">
+            <p>
+              © {new Date().getFullYear()} SA Delta Classroom. সর্বস্বত্ব সংরক্ষিত।
+            </p>
+            <p className="font-medium text-teal-700">
+              Learn Better. Achieve More. ✦
+            </p>
+          </footer>
+        </section>
       </div>
     </main>
   );
