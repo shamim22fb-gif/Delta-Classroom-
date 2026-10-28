@@ -11,15 +11,15 @@ export default async function AdminLayout({
 }) {
   const user = await getCurrentUser();
 
-  // ১. লগইন না থাকলে লগইন পেজে পাঠাও
   if (!user) redirect(ROUTES.login);
-
-  // ২. অ্যাডমিন না হলে ড্যাশবোর্ডে পাঠাও
   if (!isAdmin(user.role)) redirect(ROUTES.dashboard);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
+      {/* এখানে সাইডবারটি যুক্ত করা হয়েছে */}
       <AdminSidebar />
+      
+      {/* মূল কন্টেন্ট এরিয়া */}
       <main className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-7xl p-6">{children}</div>
       </main>
