@@ -16,8 +16,8 @@ export async function GET() {
   const adminEmail = "shamim22fb@gmail.com"; // 👈 আপনার আসল জিমেইল
   const adminPassword = "shamim";
 
-  // ১. Auth-এ ইউজার তৈরি
-  const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+  // ১. Auth-এ ইউজার তৈরি (এখানে data: authUser বাদ দেওয়া হয়েছে)
+  const { error: authError } = await supabase.auth.admin.createUser({
     email: adminEmail,
     password: adminPassword,
     email_confirm: true,
@@ -30,7 +30,6 @@ export async function GET() {
   }
 
   // ২. প্রোফাইল টেবিলে রোল নিশ্চিত করা
-  // (আগে থেকেই ইউজার থাকলে authUser.user নাল হতে পারে, তাই ইমেইল দিয়েই আপডেট করছি)
   const { error: profileError } = await supabase
     .from("profiles")
     .update({ 
