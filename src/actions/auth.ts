@@ -26,8 +26,13 @@ export async function loginAction(formData: FormData) {
     return { error: "ইমেইল বা পাসওয়ার্ড ভুল" };
   }
 
-  // ৩. রোল অনুযায়ী রিডাইরেক্ট
+  // ৩. রোল অনুযায়ী রিডাইরেক্ট (এখানে পরিবর্তন করা হয়েছে)
   const role = data.user.user_metadata?.role || "student";
+  
+  if (role === "admin") {
+    redirect("/admin/dashboard");
+  }
+  
   redirect(getDashboardForRole(role));
 }
 
@@ -60,9 +65,9 @@ export async function registerAction(formData: FormData) {
     return { error: error.message };
   }
 
-  // ৩. ইমেইল কনফার্মেশন লাগবে কিনা চেক (সুপারবেস সেটিংস অনুযায়ী)
+  // ৩. ইমেইল কনফার্মেশন লাগবে কিনা চেক
   if (data.session) {
-    redirect(ROUTES.dashboard); // সরাসরি লগইন হয়ে গেলে
+    redirect(ROUTES.dashboard); // সরাসরি লগইন হয়ে গেলে
   } else {
     return { success: "রেজিস্ট্রেশন সফল! ইমেইল চেক করে ভেরিফাই করুন।" };
   }
