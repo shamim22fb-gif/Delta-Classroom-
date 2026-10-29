@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Footer } from "@/components/layout/Footer";
+import { Footer } from "@/components/layout/Footer"; // 👈 এখানে আলাদা ফুটারটি ইমপোর্ট করা হলো
 
-// TypeScript-কে ডাটা টাইপ বলে দিচ্ছি
 type CourseType = {
   id: string;
   title: string;
@@ -15,22 +14,27 @@ type CourseType = {
 
 export default async function HomePage() {
   const supabase = await createClient();
-  
-  const { data: dbCourses } = await supabase
-    .from("courses")
-    .select("*")
-    .eq("is_published", true)
-    .order("created_at", { ascending: false })
-    .limit(4);
 
-  // টাইপ এরর এড়াতে 'as CourseType[]' ব্যবহার করা হলো
-  const courses = (dbCourses as CourseType[]) || [];
+  // ১. প্রতি বার হোমপেজে ঢুকলে ভিজিটর কাউন্ট ১ বাড়বে
+  await supabase.from("site_visits").insert({});
+
+  // ২. ডাটাবেস থেকে আসল কাউন্টগুলো নিয়ে আসা (RPC কল)
+  const [coursesRes, studentsRes, visitsRes] = await Promise.all([
+    supabase.from("courses").select("*").eq("is_published", true).order("created_at", { ascending: false }).limit(4),
+    supabase.rpc("get_total_students"),
+    supabase.rpc("get_total_visits"),
+  ]);
+
+  const courses = (coursesRes.data as CourseType[]) || [];
+  const totalStudents = studentsRes.data || 0;
+  const totalVisits = visitsRes.data || 0;
+  const totalCourses = courses.length;
 
   const stats = [
-    { icon: "📚", value: "4+", label: "COURSES", color: "text-blue-500" },
-    { icon: "🎓", value: "6+", label: "STUDENTS", color: "text-yellow-500" },
+    { icon: "📚", value: `${totalCourses}+`, label: "COURSES", color: "text-blue-500" },
+    { icon: "🎓", value: `${totalStudents}+`, label: "STUDENTS", color: "text-yellow-500" },
     { icon: "🎬", value: "7+", label: "VIDEO LESSONS", color: "text-gray-700" },
-    { icon: "🌐", value: "91", label: "TOTAL GUEST", color: "text-teal-500" },
+    { icon: "🌐", value: `${totalVisits}`, label: "TOTAL GUEST", color: "text-teal-500" },
   ];
 
   return (
@@ -83,7 +87,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* স্ট্যাটস কার্ড */}
+      {/* স্ট্যাটস কার্ড (লাইভ ডাটা) */}
       <section className="container-app -mt-10 relative z-20 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {stats.map((stat, i) => (
@@ -148,7 +152,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* নতুন ফুটার কম্পোনেন্ট */}
+      {/* 👈 এখানে শুধু একটি লাইন দিয়ে ফুটারটি যুক্ত করা হলো */}
       <Footer />
 
     </div>
