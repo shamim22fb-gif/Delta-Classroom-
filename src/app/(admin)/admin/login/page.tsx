@@ -33,12 +33,12 @@ export default function AdminLoginPage() {
       return;
     }
 
-    // ২. চেক করা সে অ্যাডমিন কিনা
+    // ২. চেক করা সে অ্যাডমিন কিনা (TypeScript টাইপ এরর ফিক্স করা হলো)
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", data.user.id)
-      .single();
+      .single() as { data: { role: string } | null };
 
     if (profile?.role !== "admin") {
       // অ্যাডমিন না হলে তাকে লগআউট করে দেওয়া হবে
