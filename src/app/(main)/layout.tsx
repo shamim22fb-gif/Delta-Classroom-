@@ -9,15 +9,9 @@ export default async function MainLayout({
   const user = await getCurrentUser();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-[#F2F7F9] flex flex-col font-sans">
       <Header user={user} />
-      <main className="flex-1">{children}</main>
-      
-      <footer className="bg-white border-t border-gray-200 py-6 mt-auto">
-        <div className="container-app text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} SA Delta Classroom. সর্বস্বত্ব সংরক্ষিত।
-        </div>
-      </footer>
+      <main className="flex-1 pb-12">{children}</main>
     </div>
   );
 }
