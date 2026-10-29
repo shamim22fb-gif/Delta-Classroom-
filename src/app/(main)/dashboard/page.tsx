@@ -5,7 +5,6 @@ import { ROUTES } from "@/constants/routes";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 
-// টাইপ ডিফাইন
 type CourseType = {
   id: string;
   title: string;
@@ -25,7 +24,6 @@ export default async function DashboardPage() {
 
   const supabase = await createClient();
 
-  // ডাটাবেস থেকে রিসেন্ট কোর্স আনা (সর্বোচ্চ ৩টি)
   const { data: dbCourses } = await supabase
     .from("courses")
     .select("id, title, total_lessons, duration_min")
@@ -35,7 +33,6 @@ export default async function DashboardPage() {
 
   const recentCourses = (dbCourses as CourseType[]) || [];
 
-  // ডাটাবেস থেকে রিসেন্ট নোটিশ আনা (সর্বোচ্চ ৩টি)
   const { data: dbNotices } = await supabase
     .from("notices")
     .select("id, title, created_at")
@@ -62,25 +59,29 @@ export default async function DashboardPage() {
   return (
     <div className="container-app py-8 space-y-8 animate-fade-in">
       
-      {/* ওয়েলকাম ব্যানার */}
-      <div className="bg-gradient-to-r from-[#007A6E] to-[#009688] rounded-2xl p-8 text-white flex items-center justify-between shadow-lg">
-        <div>
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+      {/* ১. নতুন প্রিমিয়াম Welcome ব্যানার (একদম প্রস্থ বরাবর) */}
+      <div className="bg-gradient-to-r from-[#007A6E] via-[#009688] to-[#007A6E] rounded-3xl p-10 md:p-12 text-white flex flex-col md:flex-row items-center justify-between shadow-2xl shadow-teal-900/20 relative overflow-hidden">
+        {/* ব্যাকগ্রাউন্ড ডেকোরেশন */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        
+        <div className="relative z-10 text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight">
             Welcome back, {user.full_name}! 👋
           </h1>
-          <p className="text-teal-100 text-sm">
-            Here's what's happening with your learning journey today.
+          <p className="text-teal-50 text-lg md:text-xl font-medium">
+            Continue Your learning with our Delta Classroom.
           </p>
         </div>
-        <div className="hidden md:flex bg-white/20 p-4 rounded-xl backdrop-blur-sm">
-          <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        
+        <div className="hidden md:flex bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/20 relative z-10 mt-6 md:mt-0 shadow-inner">
+          <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
           </svg>
         </div>
       </div>
 
-      {/* স্ট্যাটস কার্ড */}
+      {/* ২. স্ট্যাটস কার্ড */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, i) => (
           <Link key={i} href={stat.href} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
@@ -95,7 +96,7 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* কুইক অ্যাকশন */}
+      {/* ৩. কুইক অ্যাকশন */}
       <div>
         <h2 className="text-lg font-bold text-gray-800 mb-4">Quick Actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -113,7 +114,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* মূল গ্রিড */}
+      {/* ৪. মূল গ্রিড */}
       <div className="grid gap-8 lg:grid-cols-2">
         
         {/* রিসেন্ট কোর্স */}
@@ -126,7 +127,6 @@ export default async function DashboardPage() {
             {recentCourses.length > 0 ? (
               recentCourses.map((course) => (
                 <div key={course.id} className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl border border-transparent hover:border-gray-100 transition-all">
-                  {/* ডামি ইমেজ বক্স */}
                   <div className="w-16 h-12 bg-teal-600 rounded-lg flex-shrink-0"></div>
                   <div className="flex-1">
                     <h3 className="text-sm font-bold text-gray-800 mb-1">{course.title}</h3>
