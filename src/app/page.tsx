@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Footer } from "@/components/layout/Footer"; // 👈 এখানে আলাদা ফুটারটি ইমপোর্ট করা হলো
+import { Footer } from "@/components/layout/Footer";
 
 type CourseType = {
   id: string;
@@ -16,6 +16,7 @@ export default async function HomePage() {
   const supabase = await createClient();
 
   // ১. প্রতি বার হোমপেজে ঢুকলে ভিজিটর কাউন্ট ১ বাড়বে
+  // @ts-ignore
   await supabase.from("site_visits").insert({});
 
   // ২. ডাটাবেস থেকে আসল কাউন্টগুলো নিয়ে আসা (RPC কল)
@@ -152,9 +153,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 👈 এখানে শুধু একটি লাইন দিয়ে ফুটারটি যুক্ত করা হলো */}
       <Footer />
-
     </div>
   );
 }
