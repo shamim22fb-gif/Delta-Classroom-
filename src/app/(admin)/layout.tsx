@@ -1,24 +1,33 @@
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/layout/AdminSidebar";
-import { getCurrentUser } from "@/lib/auth";
-import { isAdmin } from "@/lib/permissions";
-import { ROUTES } from "@/constants/routes";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
+  const supabase = await createClient();
+  
+  // সরাসরি সুপাবেজ থেকে ইউজার এবং তার মেটাডাটা চেক করা
+  const { data: { user } } = await supabase.auth.getUser();
 
-  // ১. ইউজার না থাকলে সরাসরি অ্যাডমিন লগইনে পাঠাও
   if (!user) {
     redirect("/admin/login");
   }
 
-  // ২. ইউজার থাকলেও যদি অ্যাডমিন না হয়, তবে স্টুডেন্ট ড্যাশবোর্ডে পাঠাও
-  if (!isAdmin(user.role)) {
-    redirect(ROUTES.dashboard);
+  // ডাটাবেস থেকে আসল রোল চেক করা
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const role = profile?.role || user.user_metadata?.role || "student";
+
+  // যদি অ্যাডমিন না হয়, তবে স্টুডেন্ট ড্যাশবোর্ডে পাঠাও
+  if (role !== "admin") {
+    redirect("/dashboard");
   }
 
   return (
