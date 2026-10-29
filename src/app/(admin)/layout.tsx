@@ -9,23 +9,21 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // সরাসরি সুপাবেজ থেকে ইউজার এবং তার মেটাডাটা চেক করা
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/admin/login");
   }
 
-  // ডাটাবেস থেকে আসল রোল চেক করা
+  // এখানে 'as { role: string }' দিয়ে টাইপস্ক্রিপ্টকে রোল আছে বলে জানিয়ে দেওয়া হলো
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", user.id)
-    .single();
+    .single() as { data: { role: string } | null };
 
-  const role = profile?.role || user.user_metadata?.role || "student";
+  const role = profile?.role || "student";
 
-  // যদি অ্যাডমিন না হয়, তবে স্টুডেন্ট ড্যাশবোর্ডে পাঠাও
   if (role !== "admin") {
     redirect("/dashboard");
   }
