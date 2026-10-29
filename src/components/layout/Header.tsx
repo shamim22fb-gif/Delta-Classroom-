@@ -16,7 +16,7 @@ export function Header({ user }: { user: any }) {
     { name: "Exams", href: "/exam", icon: "📝" },
     { name: "Notices", href: "/notice", icon: "🔔" },
     { name: "Results", href: "/result", icon: "📊" },
-    { name: "Profile", href: "#", icon: "👤", isDropdown: true }, // এটি ড্রপডাউন হবে
+    { name: "Profile", href: "#", icon: "👤", isDropdown: true },
   ];
 
   return (
@@ -39,11 +39,10 @@ export function Header({ user }: { user: any }) {
 
       {/* নেভিগেশন ট্যাব */}
       <div className="bg-[#00665C] border-b border-[#00554D]">
-        <div className="container-app flex overflow-x-auto hide-scrollbar">
+        <div className="container-app flex overflow-visible hide-scrollbar">
           {navItems.map((item) => {
             const isActive = pathname === item.href && !item.isDropdown;
             
-            // প্রোফাইল ড্রপডাউন লজিক
             if (item.isDropdown) {
               return (
                 <div key={item.name} className="relative">
@@ -55,27 +54,32 @@ export function Header({ user }: { user: any }) {
                   >
                     <span className="text-lg">{item.icon}</span>
                     {item.name}
-                    <span className="text-xs">▼</span>
+                    <span className={`text-xs transition-transform ${showProfileMenu ? "rotate-180" : ""}`}>▼</span>
                   </button>
                   
-                  {/* ড্রপডাউন মেনু */}
+                  {/* ড্রপডাউন মেনু - এবার সঠিকভাবে ভেসে উঠবে */}
                   {showProfileMenu && (
-                    <div className="absolute right-0 top-full mt-0 w-48 bg-white rounded-b-lg shadow-xl border border-gray-100 overflow-hidden text-gray-800">
-                      <Link href="/profile" className="block px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100" onClick={() => setShowProfileMenu(false)}>
+                    <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden text-gray-800 z-[100]">
+                      <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                        <p className="text-sm font-bold text-gray-800 truncate">{user?.full_name || "User"}</p>
+                        <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                      </div>
+                      <Link href="/profile" className="block px-4 py-3 text-sm font-medium hover:bg-gray-50 transition-colors" onClick={() => setShowProfileMenu(false)}>
                         👤 My Profile
                       </Link>
-                      <form action={logoutAction}>
-                        <button type="submit" className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-medium">
-                          🚪 Logout
-                        </button>
-                      </form>
+                      <div className="border-t border-gray-100">
+                        <form action={logoutAction}>
+                          <button type="submit" className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-bold transition-colors">
+                            🚪 Logout
+                          </button>
+                        </form>
+                      </div>
                     </div>
                   )}
                 </div>
               );
             }
 
-            // সাধারণ ট্যাব
             return (
               <Link
                 key={item.name}
