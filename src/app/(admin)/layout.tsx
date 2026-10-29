@@ -11,11 +11,15 @@ export default async function AdminLayout({
 }) {
   const user = await getCurrentUser();
 
-  // ১. লগইন না থাকলে অ্যাডমিন লগইনে পাঠাও
-  if (!user) redirect("/admin/login");
+  // ১. ইউজার না থাকলে সরাসরি অ্যাডমিন লগইনে পাঠাও
+  if (!user) {
+    redirect("/admin/login");
+  }
 
-  // ২. অ্যাডমিন না হলে স্টুডেন্ট ড্যাশবোর্ডে পাঠাও
-  if (!isAdmin(user.role)) redirect(ROUTES.dashboard);
+  // ২. ইউজার থাকলেও যদি অ্যাডমিন না হয়, তবে স্টুডেন্ট ড্যাশবোর্ডে পাঠাও
+  if (!isAdmin(user.role)) {
+    redirect(ROUTES.dashboard);
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
