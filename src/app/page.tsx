@@ -16,7 +16,7 @@ export default async function HomePage() {
   const supabase = await createClient();
 
   // ১. প্রতি বার হোমপেজে ঢুকলে ভিজিটর কাউন্ট ১ বাড়বে
-  // @ts-ignore
+  // @ts-expect-error
   await supabase.from("site_visits").insert({});
 
   // ২. ডাটাবেস থেকে আসল কাউন্টগুলো নিয়ে আসা (RPC কল)
